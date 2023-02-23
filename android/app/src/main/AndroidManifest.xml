@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.resq_cat_club">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="resq_cat_club"
         android:name="${applicationName}"
