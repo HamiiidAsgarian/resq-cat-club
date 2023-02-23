@@ -38,18 +38,7 @@ class _PrivateGallaryState extends State<PrivateGallary>
                         backgroundColor: Colors.amber,
                         elevation: 0,
                         onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return InfoDialouge(
-                                    blocedItems: notCuteEnoughList,
-                                    onDelete: (e) {
-                                      setState(() {
-                                        notCuteEnoughList.removeWhere(
-                                            (element) => element == e);
-                                      });
-                                    });
-                              });
+                          onPressShowUnlikeds();
                         },
                         child: Stack(
                           children: [
@@ -90,9 +79,7 @@ class _PrivateGallaryState extends State<PrivateGallary>
                       backgroundColor: Colors.amber,
                       elevation: 0,
                       onPressed: () {
-                        setState(() {
-                          notCuteEnoughList.clear();
-                        });
+                        onPressClearList();
                       },
                       child: const Icon(Icons.handshake_outlined)))
             ]),
@@ -105,7 +92,7 @@ class _PrivateGallaryState extends State<PrivateGallary>
                 border: Border.all(
                     width: 4, color: const Color.fromARGB(255, 0, 0, 0)),
                 borderRadius: BorderRadius.circular(25),
-                color: Colors.red,
+                color: Colors.white,
                 image: () {
                   return images.isNotEmpty
                       ? DecorationImage(
@@ -140,55 +127,81 @@ class _PrivateGallaryState extends State<PrivateGallary>
                   backgroundColor: Colors.blueAccent,
                   child: const Icon(Icons.heart_broken_rounded),
                   onPressed: () {
-                    if (!notCuteEnoughList.contains(index)) {
-                      setState(() {
-                        notCuteEnoughList.add(index);
-                        notCuteEnoughList = notCuteEnoughList.toSet().toList();
-                      });
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("$index is added to the notCuteEnough list"),
-                          TextButton(
-                              child: const Text(
-                                "regret",
-                                style: TextStyle(color: Colors.amber),
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  notCuteEnoughList
-                                      .removeWhere((e) => e == index);
-                                });
-                              })
-                        ],
-                      )));
-                    }
+                    onPressNotcuteEnogh();
                   }),
               FloatingActionButton(
                   elevation: 0,
                   backgroundColor: Colors.green,
                   child: const Icon(Icons.upload_file_outlined),
-                  onPressed: () async {
-                    try {
-                      final image = await ImagePicker()
-                          .pickImage(source: ImageSource.gallery);
-
-                      if (image == null) return;
-
-                      final imageTempt = File(image.path);
-                      setState(() {
-                        images.add(imageTempt);
-                      });
-                    } on PlatformException catch (e) {
-                      print(e);
-                    }
+                  onPressed: () {
+                    onPressUpload();
                   }),
             ],
           ),
         ],
       ),
     );
+  }
+
+  onPressClearList() {
+    setState(() {
+      notCuteEnoughList.clear();
+    });
+  }
+
+  onPressUpload() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+      if (image == null) return;
+
+      final imageTempt = File(image.path);
+      setState(() {
+        images.add(imageTempt);
+      });
+    } on PlatformException catch (e) {
+      print(e);
+    }
+  }
+
+  onPressShowUnlikeds() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return InfoDialouge(
+              blocedItems: notCuteEnoughList,
+              onDelete: (e) {
+                setState(() {
+                  notCuteEnoughList.removeWhere((element) => element == e);
+                });
+              });
+        });
+  }
+
+  onPressNotcuteEnogh() {
+    if (!notCuteEnoughList.contains(index) && images.isNotEmpty) {
+      setState(() {
+        notCuteEnoughList.add(index);
+        notCuteEnoughList = notCuteEnoughList.toSet().toList();
+      });
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text("$index is added to the notCuteEnough list"),
+          TextButton(
+              child: const Text(
+                "regret",
+                style: TextStyle(color: Colors.amber),
+              ),
+              onPressed: () {
+                setState(() {
+                  notCuteEnoughList.removeWhere((e) => e == index);
+                });
+              })
+        ],
+      )));
+    }
   }
 
   isNextIndexnotCuteEnoughd(int val) {

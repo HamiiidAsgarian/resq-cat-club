@@ -28,8 +28,7 @@ class _InfoDialougeState extends State<InfoDialouge> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const Text(
-            "Customer Info",
-            style: TextStyle(color: Colors.red),
+            "Not Cute Enough List",
           ),
           CupertinoButton(
             child: const Icon(Icons.close),

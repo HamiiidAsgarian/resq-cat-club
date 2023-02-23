@@ -36,18 +36,7 @@ class _PublicGallaryState extends State<PublicGallary>
                         backgroundColor: Colors.amber,
                         elevation: 0,
                         onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return InfoDialouge(
-                                    blocedItems: notCuteEnoughList,
-                                    onDelete: (e) {
-                                      setState(() {
-                                        notCuteEnoughList.removeWhere(
-                                            (element) => element == e);
-                                      });
-                                    });
-                              });
+                          onPressShowUnlikeds(context);
                         },
                         child: Stack(
                           children: [
@@ -88,9 +77,7 @@ class _PublicGallaryState extends State<PublicGallary>
                       backgroundColor: Colors.amber,
                       elevation: 0,
                       onPressed: () {
-                        setState(() {
-                          notCuteEnoughList.clear();
-                        });
+                        onPressClearList();
                       },
                       child: const Icon(Icons.handshake_outlined)))
             ]),
@@ -103,7 +90,7 @@ class _PublicGallaryState extends State<PublicGallary>
                 border: Border.all(
                     width: 4, color: const Color.fromARGB(255, 0, 0, 0)),
                 borderRadius: BorderRadius.circular(25),
-                color: Colors.red,
+                color: Colors.white,
                 image: DecorationImage(
                     image: NetworkImage(
                         'https://placekitten.com/300/500?image=$index'))),
@@ -135,36 +122,59 @@ class _PublicGallaryState extends State<PublicGallary>
                   backgroundColor: Colors.blueAccent,
                   child: const Icon(Icons.heart_broken_rounded),
                   onPressed: () {
-                    if (!notCuteEnoughList.contains(index)) {
-                      setState(() {
-                        notCuteEnoughList.add(index);
-                        notCuteEnoughList = notCuteEnoughList.toSet().toList();
-                      });
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("$index is added to the notCuteEnough list"),
-                          TextButton(
-                              child: const Text(
-                                "regret",
-                                style: TextStyle(color: Colors.amber),
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  notCuteEnoughList
-                                      .removeWhere((e) => e == index);
-                                });
-                              })
-                        ],
-                      )));
-                    }
+                    onPressNotcuteEnogh(context);
                   }),
             ],
           ),
         ],
       ),
     );
+  }
+
+  void onPressClearList() {
+    setState(() {
+      notCuteEnoughList.clear();
+    });
+  }
+
+  void onPressNotcuteEnogh(BuildContext context) {
+    if (!notCuteEnoughList.contains(index)) {
+      setState(() {
+        notCuteEnoughList.add(index);
+        notCuteEnoughList = notCuteEnoughList.toSet().toList();
+      });
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text("$index is added to the notCuteEnough list"),
+          TextButton(
+              child: const Text(
+                "regret",
+                style: TextStyle(color: Colors.amber),
+              ),
+              onPressed: () {
+                setState(() {
+                  notCuteEnoughList.removeWhere((e) => e == index);
+                });
+              })
+        ],
+      )));
+    }
+  }
+
+  void onPressShowUnlikeds(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return InfoDialouge(
+              blocedItems: notCuteEnoughList,
+              onDelete: (e) {
+                setState(() {
+                  notCuteEnoughList.removeWhere((element) => element == e);
+                });
+              });
+        });
   }
 
   isNextIndexnotCuteEnoughd(int val) {
