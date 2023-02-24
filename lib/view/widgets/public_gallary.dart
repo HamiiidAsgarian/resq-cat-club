@@ -1,7 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-
+import 'package:resq_cat_club/presenter/main_operations.dart';
 import 'dialog.dart';
 
 class PublicGallary extends StatefulWidget {
@@ -13,9 +11,7 @@ class PublicGallary extends StatefulWidget {
 
 class _PublicGallaryState extends State<PublicGallary>
     with AutomaticKeepAliveClientMixin<PublicGallary> {
-  int index = 0;
-  List<int> notCuteEnoughList = [];
-  List<File> images = [];
+  MainOperations publicGallaryCats = MainOperations(0, [], []);
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +46,7 @@ class _PublicGallaryState extends State<PublicGallary>
                                       shape: BoxShape.circle),
                                   child: Center(
                                     child: Text(
-                                      "${notCuteEnoughList.length}",
+                                      "${publicGallaryCats.notCuteEnoughLength}",
                                       style:
                                           const TextStyle(color: Colors.black),
                                     ),
@@ -69,7 +65,7 @@ class _PublicGallaryState extends State<PublicGallary>
               ),
               Align(
                 alignment: Alignment.center,
-                child: Text("Cat Number $index"),
+                child: Text("Cat Number ${publicGallaryCats.index}"),
               ),
               Align(
                   alignment: Alignment.centerRight,
@@ -93,7 +89,7 @@ class _PublicGallaryState extends State<PublicGallary>
                 color: Colors.white,
                 image: DecorationImage(
                     image: NetworkImage(
-                        'https://placekitten.com/300/500?image=$index'))),
+                        'https://placekitten.com/300/500?image=${publicGallaryCats.index}'))),
             child: Center(
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -102,14 +98,14 @@ class _PublicGallaryState extends State<PublicGallary>
                         icon: const Icon(Icons.arrow_back_ios,
                             color: Colors.white),
                         onPressed: () {
-                          isPreviusIndexnotCuteEnoughd(index);
+                          isPreviusIndexnotCuteEnoughd(publicGallaryCats.index);
                           // }
                         }),
                     IconButton(
                         icon: const Icon(Icons.arrow_forward_ios,
                             color: Colors.white),
                         onPressed: () {
-                          isNextIndexnotCuteEnoughd(index);
+                          isNextIndexnotCuteEnoughd(publicGallaryCats.index);
                         })
                   ]),
             ),
@@ -133,34 +129,20 @@ class _PublicGallaryState extends State<PublicGallary>
 
   void onPressClearList() {
     setState(() {
-      notCuteEnoughList.clear();
+      publicGallaryCats.clearNotCutes();
     });
   }
 
   void onPressNotcuteEnogh(BuildContext context) {
-    if (!notCuteEnoughList.contains(index)) {
-      setState(() {
-        notCuteEnoughList.add(index);
-        notCuteEnoughList = notCuteEnoughList.toSet().toList();
+    setState(() {
+      publicGallaryCats.addNewNotCuteEnough();
+      publicGallaryCats.showSnackbar(context,
+          "${publicGallaryCats.index} is added to the notCuteEnough list", () {
+        setState(() {
+          publicGallaryCats.removeNotCuteByElement(publicGallaryCats.index);
+        });
       });
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text("$index is added to the notCuteEnough list"),
-          TextButton(
-              child: const Text(
-                "regret",
-                style: TextStyle(color: Colors.amber),
-              ),
-              onPressed: () {
-                setState(() {
-                  notCuteEnoughList.removeWhere((e) => e == index);
-                });
-              })
-        ],
-      )));
-    }
+    });
   }
 
   void onPressShowUnlikeds(BuildContext context) {
@@ -168,33 +150,25 @@ class _PublicGallaryState extends State<PublicGallary>
         context: context,
         builder: (context) {
           return InfoDialouge(
-              blocedItems: notCuteEnoughList,
+              blocedItems: publicGallaryCats.getNotCuteList(),
               onDelete: (e) {
                 setState(() {
-                  notCuteEnoughList.removeWhere((element) => element == e);
+                  publicGallaryCats.removeNotCuteByElement(e);
                 });
               });
         });
   }
 
   isNextIndexnotCuteEnoughd(int val) {
-    if (notCuteEnoughList.contains(val + 1)) {
-      isNextIndexnotCuteEnoughd(val + 1);
-    } else {
-      setState(() {
-        index = val + 1;
-      });
-    }
+    setState(() {
+      publicGallaryCats.isNextIndexnotCuteEnoughd(val, null);
+    });
   }
 
   isPreviusIndexnotCuteEnoughd(int val) {
-    if (notCuteEnoughList.contains(val - 1)) {
-      isPreviusIndexnotCuteEnoughd(val - 1);
-    } else {
-      setState(() {
-        index = val - 1;
-      });
-    }
+    setState(() {
+      publicGallaryCats.isPreviusIndexnotCuteEnoughd(val, null);
+    });
   }
 
   @override

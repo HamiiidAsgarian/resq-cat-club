@@ -41,7 +41,7 @@ class _InfoDialougeState extends State<InfoDialouge> {
       contentPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
       children: [
         SizedBox(
-          height: 100,
+          height: 200,
           width: 100,
           child: ListView.builder(
               itemCount: blocedItemsLocal.length,
