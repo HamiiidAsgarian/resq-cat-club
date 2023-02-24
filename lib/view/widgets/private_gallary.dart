@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:resq_cat_club/presenter/main_operations.dart';
 
 import 'dialog.dart';
 
@@ -15,9 +12,7 @@ class PrivateGallary extends StatefulWidget {
 
 class _PrivateGallaryState extends State<PrivateGallary>
     with AutomaticKeepAliveClientMixin<PrivateGallary> {
-  int index = 0;
-  List<int> notCuteEnoughList = [];
-  List<File> images = [];
+  MainOperations privateGallaryCats = MainOperations(0, [], []);
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +33,7 @@ class _PrivateGallaryState extends State<PrivateGallary>
                         backgroundColor: Colors.amber,
                         elevation: 0,
                         onPressed: () {
-                          onPressShowUnlikeds();
+                          onPressShowUnlikeds(context);
                         },
                         child: Stack(
                           children: [
@@ -52,7 +47,7 @@ class _PrivateGallaryState extends State<PrivateGallary>
                                       shape: BoxShape.circle),
                                   child: Center(
                                     child: Text(
-                                      "${notCuteEnoughList.length}",
+                                      "${privateGallaryCats.notCuteEnoughLength}",
                                       style:
                                           const TextStyle(color: Colors.black),
                                     ),
@@ -71,7 +66,7 @@ class _PrivateGallaryState extends State<PrivateGallary>
               ),
               Align(
                 alignment: Alignment.center,
-                child: Text("Cat Number $index"),
+                child: Text("Cat Number ${privateGallaryCats.index}"),
               ),
               Align(
                   alignment: Alignment.centerRight,
@@ -94,10 +89,14 @@ class _PrivateGallaryState extends State<PrivateGallary>
                 borderRadius: BorderRadius.circular(25),
                 color: Colors.white,
                 image: () {
-                  return images.isNotEmpty
-                      ? DecorationImage(
-                          fit: BoxFit.fill, image: FileImage(images[index]))
-                      : null;
+                  if (privateGallaryCats.images.isNotEmpty) {
+                    return privateGallaryCats.images.isNotEmpty
+                        ? DecorationImage(
+                            fit: BoxFit.fill,
+                            image: FileImage(privateGallaryCats
+                                .images[privateGallaryCats.index]))
+                        : null;
+                  }
                 }()),
             child: Center(
               child: Row(
@@ -107,14 +106,20 @@ class _PrivateGallaryState extends State<PrivateGallary>
                         icon: const Icon(Icons.arrow_back_ios,
                             color: Colors.white),
                         onPressed: () {
-                          isPreviusIndexnotCuteEnoughd(index);
+                          if (privateGallaryCats.index > 0) {
+                            isPreviusIndexnotCuteEnoughd(
+                                privateGallaryCats.index);
+                          }
                           // }
                         }),
                     IconButton(
                         icon: const Icon(Icons.arrow_forward_ios,
                             color: Colors.white),
                         onPressed: () {
-                          isNextIndexnotCuteEnoughd(index);
+                          if (privateGallaryCats.index <
+                              privateGallaryCats.imagesLength - 1) {
+                            isNextIndexnotCuteEnoughd(privateGallaryCats.index);
+                          }
                         })
                   ]),
             ),
@@ -127,7 +132,7 @@ class _PrivateGallaryState extends State<PrivateGallary>
                   backgroundColor: Colors.blueAccent,
                   child: const Icon(Icons.heart_broken_rounded),
                   onPressed: () {
-                    onPressNotcuteEnogh();
+                    onPressNotcuteEnogh(context);
                   }),
               FloatingActionButton(
                   elevation: 0,
@@ -143,89 +148,57 @@ class _PrivateGallaryState extends State<PrivateGallary>
     );
   }
 
-  onPressClearList() {
+  void onPressClearList() {
     setState(() {
-      notCuteEnoughList.clear();
+      privateGallaryCats.clearNotCutes();
     });
   }
 
-  onPressUpload() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-
-      if (image == null) return;
-
-      final imageTempt = File(image.path);
-      setState(() {
-        images.add(imageTempt);
+  void onPressNotcuteEnogh(BuildContext context) {
+    if (privateGallaryCats.images.isNotEmpty) {
+      privateGallaryCats.addNewNotCuteEnough();
+      privateGallaryCats.showSnackbar(context,
+          "${privateGallaryCats.index} is added to the notCuteEnough list", () {
+        setState(() {
+          privateGallaryCats.removeNotCuteByElement(privateGallaryCats.index);
+        });
       });
-    } on PlatformException catch (e) {
-      print(e);
     }
+
+    setState(() {});
   }
 
-  onPressShowUnlikeds() {
+  void onPressShowUnlikeds(BuildContext context) {
     showDialog(
         context: context,
         builder: (context) {
           return InfoDialouge(
-              blocedItems: notCuteEnoughList,
+              blocedItems: privateGallaryCats.getNotCuteList(),
               onDelete: (e) {
                 setState(() {
-                  notCuteEnoughList.removeWhere((element) => element == e);
+                  privateGallaryCats.removeNotCuteByElement(e);
                 });
               });
         });
   }
 
-  onPressNotcuteEnogh() {
-    if (!notCuteEnoughList.contains(index) && images.isNotEmpty) {
-      setState(() {
-        notCuteEnoughList.add(index);
-        notCuteEnoughList = notCuteEnoughList.toSet().toList();
-      });
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text("$index is added to the notCuteEnough list"),
-          TextButton(
-              child: const Text(
-                "regret",
-                style: TextStyle(color: Colors.amber),
-              ),
-              onPressed: () {
-                setState(() {
-                  notCuteEnoughList.removeWhere((e) => e == index);
-                });
-              })
-        ],
-      )));
-    }
-  }
-
   isNextIndexnotCuteEnoughd(int val) {
-    if (val < images.length - 1) {
-      if (notCuteEnoughList.contains(val + 1)) {
-        isNextIndexnotCuteEnoughd(val + 1);
-      } else {
-        setState(() {
-          index = val + 1;
-        });
-      }
-    }
+    setState(() {
+      privateGallaryCats.isNextIndexnotCuteEnoughd(
+          val, privateGallaryCats.imagesLength);
+    });
   }
 
   isPreviusIndexnotCuteEnoughd(int val) {
-    if (val > 0) {
-      if (notCuteEnoughList.contains(val - 1)) {
-        isPreviusIndexnotCuteEnoughd(val - 1);
-      } else {
-        setState(() {
-          index = val - 1;
-        });
-      }
-    }
+    setState(() {
+      privateGallaryCats.isPreviusIndexnotCuteEnoughd(val, 0);
+    });
+  }
+
+  onPressUpload() async {
+    await privateGallaryCats.onPressUpload();
+
+    setState(() {});
   }
 
   @override

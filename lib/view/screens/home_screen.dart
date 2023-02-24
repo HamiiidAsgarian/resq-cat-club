@@ -1,21 +1,9 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:resq_cat_club/view/widgets/private_gallary.dart';
-
 import '../widgets/public_gallary.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  int index = 0;
-  List<int> notCuteEnoughList = [];
-  List<File> images = [];
 
   @override
   Widget build(BuildContext context) {
