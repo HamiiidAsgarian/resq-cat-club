@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:resq_cat_club/presenter/main_operations.dart';
+import '../../core/const.dart';
 import 'dialog.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class PublicGallary extends StatefulWidget {
   const PublicGallary({super.key});
@@ -11,7 +13,12 @@ class PublicGallary extends StatefulWidget {
 
 class _PublicGallaryState extends State<PublicGallary>
     with AutomaticKeepAliveClientMixin<PublicGallary> {
-  MainOperations publicGallaryCats = MainOperations(0, [], []);
+  late MainOperations publicGallaryCats;
+  @override
+  void initState() {
+    publicGallaryCats = MainOperations(0, [], []);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +38,7 @@ class _PublicGallaryState extends State<PublicGallary>
                     FloatingActionButton(
                         backgroundColor: Colors.amber,
                         elevation: 0,
-                        onPressed: () {
-                          onPressShowUnlikeds(context);
-                        },
+                        onPressed: () => onPressShowUnlikeds(context),
                         child: Stack(
                           children: [
                             Align(
@@ -42,20 +47,24 @@ class _PublicGallaryState extends State<PublicGallary>
                                   width: 20,
                                   height: 20,
                                   decoration: const BoxDecoration(
-                                      color: Colors.white,
+                                      color: AppConsts.mainWhite,
                                       shape: BoxShape.circle),
                                   child: Center(
                                     child: Text(
                                       "${publicGallaryCats.notCuteEnoughLength}",
-                                      style:
-                                          const TextStyle(color: Colors.black),
+                                      style: const TextStyle(
+                                          color: Colors.black,
+                                          fontFamily: "text"),
                                     ),
                                   )),
                             ),
                             const Center(
-                              child: Icon(
-                                Icons.heart_broken_outlined,
-                                color: Colors.white,
+                              child: Text(
+                                "X",
+                                style: TextStyle(
+                                    fontSize: 30,
+                                    fontFamily: "symbol",
+                                    color: AppConsts.mainWhite),
                               ),
                             )
                           ],
@@ -64,18 +73,21 @@ class _PublicGallaryState extends State<PublicGallary>
                 ),
               ),
               Align(
-                alignment: Alignment.center,
-                child: Text("Cat Number ${publicGallaryCats.index}"),
-              ),
-              Align(
                   alignment: Alignment.centerRight,
                   child: FloatingActionButton(
                       backgroundColor: Colors.amber,
                       elevation: 0,
-                      onPressed: () {
-                        onPressClearList();
-                      },
-                      child: const Icon(Icons.handshake_outlined)))
+                      onPressed: () => onPressClearList(),
+
+                      /// > represents cat symbol in [symbol] font
+
+                      child: const Text(
+                        ">",
+                        style: TextStyle(
+                            fontSize: 30,
+                            fontFamily: "symbol",
+                            color: AppConsts.mainWhite),
+                      ))),
             ]),
           ),
           Center(
@@ -86,28 +98,62 @@ class _PublicGallaryState extends State<PublicGallary>
                 border: Border.all(
                     width: 4, color: const Color.fromARGB(255, 0, 0, 0)),
                 borderRadius: BorderRadius.circular(25),
-                color: Colors.white,
+                color: AppConsts.mainWhite,
                 image: DecorationImage(
-                    image: NetworkImage(
+                    image: CachedNetworkImageProvider(
                         'https://placekitten.com/300/500?image=${publicGallaryCats.index}'))),
-            child: Center(
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                        icon: const Icon(Icons.arrow_back_ios,
-                            color: Colors.white),
-                        onPressed: () {
-                          isPreviusIndexnotCuteEnoughd(publicGallaryCats.index);
-                          // }
-                        }),
-                    IconButton(
-                        icon: const Icon(Icons.arrow_forward_ios,
-                            color: Colors.white),
-                        onPressed: () {
-                          isNextIndexnotCuteEnoughd(publicGallaryCats.index);
-                        })
-                  ]),
+            child: Stack(
+              children: [
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      clipBehavior: Clip.none,
+                      width: double.infinity,
+                      height: 75,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                              colors: [
+                            Colors.black,
+                            Color.fromARGB(0, 255, 255, 255)
+                          ])),
+                      child: Center(
+                        child: Text(
+                          "Cat Number ${publicGallaryCats.index}",
+                          style: const TextStyle(
+                            color: AppConsts.mainWhite,
+                            fontSize: 30,
+                            fontFamily: "text",
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Center(
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                            icon: const Icon(Icons.arrow_back_ios,
+                                color: AppConsts.mainWhite),
+                            onPressed: () => isPreviusIndexnotCuteEnoughd(
+                                publicGallaryCats.index)
+                            // }
+                            ),
+                        IconButton(
+                            icon: const Icon(Icons.arrow_forward_ios,
+                                color: AppConsts.mainWhite),
+                            onPressed: () => isNextIndexnotCuteEnoughd(
+                                publicGallaryCats.index))
+                      ]),
+                ),
+              ],
             ),
           )),
           Row(
@@ -115,11 +161,18 @@ class _PublicGallaryState extends State<PublicGallary>
             children: [
               FloatingActionButton(
                   elevation: 0,
-                  backgroundColor: Colors.blueAccent,
-                  child: const Icon(Icons.heart_broken_rounded),
-                  onPressed: () {
-                    onPressNotcuteEnogh(context);
-                  }),
+                  backgroundColor: Colors.redAccent,
+
+                  /// x represents cat symbol in [symbol] font
+
+                  child: const Text(
+                    "X",
+                    style: TextStyle(
+                        fontSize: 30,
+                        fontFamily: "symbol",
+                        color: AppConsts.mainWhite),
+                  ),
+                  onPressed: () => onPressNotcuteEnogh(context)),
             ],
           ),
         ],
@@ -159,13 +212,13 @@ class _PublicGallaryState extends State<PublicGallary>
         });
   }
 
-  isNextIndexnotCuteEnoughd(int val) {
+  void isNextIndexnotCuteEnoughd(int val) {
     setState(() {
       publicGallaryCats.isNextIndexnotCuteEnoughd(val, null);
     });
   }
 
-  isPreviusIndexnotCuteEnoughd(int val) {
+  void isPreviusIndexnotCuteEnoughd(int val) {
     setState(() {
       publicGallaryCats.isPreviusIndexnotCuteEnoughd(val, null);
     });

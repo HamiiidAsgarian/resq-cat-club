@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:resq_cat_club/presenter/main_operations.dart';
 
+import '../../core/const.dart';
 import 'dialog.dart';
 
 class PrivateGallary extends StatefulWidget {
@@ -12,7 +13,12 @@ class PrivateGallary extends StatefulWidget {
 
 class _PrivateGallaryState extends State<PrivateGallary>
     with AutomaticKeepAliveClientMixin<PrivateGallary> {
-  MainOperations privateGallaryCats = MainOperations(0, [], []);
+  late MainOperations privateGallaryCats;
+  @override
+  void initState() {
+    privateGallaryCats = MainOperations(0, [], []);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +38,7 @@ class _PrivateGallaryState extends State<PrivateGallary>
                     FloatingActionButton(
                         backgroundColor: Colors.amber,
                         elevation: 0,
-                        onPressed: () {
-                          onPressShowUnlikeds(context);
-                        },
+                        onPressed: () => onPressShowUnlikeds(context),
                         child: Stack(
                           children: [
                             Align(
@@ -43,20 +47,25 @@ class _PrivateGallaryState extends State<PrivateGallary>
                                   width: 20,
                                   height: 20,
                                   decoration: const BoxDecoration(
-                                      color: Colors.white,
+                                      color: AppConsts.mainWhite,
                                       shape: BoxShape.circle),
                                   child: Center(
                                     child: Text(
                                       "${privateGallaryCats.notCuteEnoughLength}",
-                                      style:
-                                          const TextStyle(color: Colors.black),
+                                      style: const TextStyle(
+                                          color: Colors.black,
+                                          fontFamily: "text"),
                                     ),
                                   )),
                             ),
                             const Center(
-                              child: Icon(
-                                Icons.heart_broken_outlined,
-                                color: Colors.white,
+                              /// x represents cat symbol in [symbol] font
+                              child: Text(
+                                "X",
+                                style: TextStyle(
+                                    fontSize: 30,
+                                    fontFamily: "symbol",
+                                    color: AppConsts.mainWhite),
                               ),
                             )
                           ],
@@ -65,18 +74,20 @@ class _PrivateGallaryState extends State<PrivateGallary>
                 ),
               ),
               Align(
-                alignment: Alignment.center,
-                child: Text("Cat Number ${privateGallaryCats.index}"),
-              ),
-              Align(
                   alignment: Alignment.centerRight,
                   child: FloatingActionButton(
                       backgroundColor: Colors.amber,
                       elevation: 0,
-                      onPressed: () {
-                        onPressClearList();
-                      },
-                      child: const Icon(Icons.handshake_outlined)))
+                      onPressed: () => onPressClearList(),
+
+                      /// > represents cat symbol in [symbol] font
+                      child: const Text(
+                        ">",
+                        style: TextStyle(
+                            fontSize: 30,
+                            fontFamily: "symbol",
+                            color: AppConsts.mainWhite),
+                      ))),
             ]),
           ),
           Center(
@@ -87,7 +98,10 @@ class _PrivateGallaryState extends State<PrivateGallary>
                 border: Border.all(
                     width: 4, color: const Color.fromARGB(255, 0, 0, 0)),
                 borderRadius: BorderRadius.circular(25),
-                color: Colors.white,
+                color: AppConsts.mainWhite,
+
+                /// if there is at least on uploaded image in [images] image would appear
+
                 image: () {
                   if (privateGallaryCats.images.isNotEmpty) {
                     return privateGallaryCats.images.isNotEmpty
@@ -98,30 +112,56 @@ class _PrivateGallaryState extends State<PrivateGallary>
                         : null;
                   }
                 }()),
-            child: Center(
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                        icon: const Icon(Icons.arrow_back_ios,
-                            color: Colors.white),
-                        onPressed: () {
-                          if (privateGallaryCats.index > 0) {
-                            isPreviusIndexnotCuteEnoughd(
-                                privateGallaryCats.index);
-                          }
-                          // }
-                        }),
-                    IconButton(
-                        icon: const Icon(Icons.arrow_forward_ios,
-                            color: Colors.white),
-                        onPressed: () {
-                          if (privateGallaryCats.index <
-                              privateGallaryCats.imagesLength - 1) {
-                            isNextIndexnotCuteEnoughd(privateGallaryCats.index);
-                          }
-                        })
-                  ]),
+            child: Stack(
+              children: [
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      clipBehavior: Clip.none,
+                      width: double.infinity,
+                      height: 75,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                              colors: [
+                            Colors.black,
+                            Color.fromARGB(0, 255, 255, 255)
+                          ])),
+                      child: Center(
+                        child: Text(
+                          "Cat Number ${privateGallaryCats.index}",
+                          style: const TextStyle(
+                            color: AppConsts.mainWhite,
+                            fontSize: 30,
+                            fontFamily: "text",
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Center(
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                            icon: const Icon(Icons.arrow_back_ios,
+                                color: AppConsts.mainWhite),
+                            onPressed: () => isPreviusIndexnotCuteEnoughd(
+                                privateGallaryCats.index)),
+                        IconButton(
+                            icon: const Icon(Icons.arrow_forward_ios,
+                                color: AppConsts.mainWhite),
+                            onPressed: () => isNextIndexnotCuteEnoughd(
+                                privateGallaryCats.index))
+                      ]),
+                ),
+              ],
             ),
           )),
           Row(
@@ -129,18 +169,21 @@ class _PrivateGallaryState extends State<PrivateGallary>
             children: [
               FloatingActionButton(
                   elevation: 0,
-                  backgroundColor: Colors.blueAccent,
-                  child: const Icon(Icons.heart_broken_rounded),
-                  onPressed: () {
-                    onPressNotcuteEnogh(context);
-                  }),
+                  backgroundColor: Colors.redAccent,
+                  child: const Text(
+                    "X",
+                    style: TextStyle(
+                        fontSize: 30,
+                        fontFamily: "symbol",
+                        color: AppConsts.mainWhite),
+                  ),
+                  onPressed: () => onPressNotcuteEnogh(context)),
               FloatingActionButton(
                   elevation: 0,
                   backgroundColor: Colors.green,
-                  child: const Icon(Icons.upload_file_outlined),
-                  onPressed: () {
-                    onPressUpload();
-                  }),
+                  child: const Icon(Icons.upload_file_outlined,
+                      color: AppConsts.mainWhite),
+                  onPressed: () => onPressUpload()),
             ],
           ),
         ],
@@ -182,20 +225,20 @@ class _PrivateGallaryState extends State<PrivateGallary>
         });
   }
 
-  isNextIndexnotCuteEnoughd(int val) {
+  void isNextIndexnotCuteEnoughd(int val) {
     setState(() {
       privateGallaryCats.isNextIndexnotCuteEnoughd(
           val, privateGallaryCats.imagesLength);
     });
   }
 
-  isPreviusIndexnotCuteEnoughd(int val) {
+  void isPreviusIndexnotCuteEnoughd(int val) {
     setState(() {
       privateGallaryCats.isPreviusIndexnotCuteEnoughd(val, 0);
     });
   }
 
-  onPressUpload() async {
+  Future<void> onPressUpload() async {
     await privateGallaryCats.onPressUpload();
 
     setState(() {});
