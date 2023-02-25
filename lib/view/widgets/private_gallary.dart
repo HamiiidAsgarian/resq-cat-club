@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:resq_cat_club/presenter/main_operations.dart';
 
-import '../const.dart';
+import '../../core/const.dart';
 import 'dialog.dart';
 
 class PrivateGallary extends StatefulWidget {
@@ -13,7 +13,12 @@ class PrivateGallary extends StatefulWidget {
 
 class _PrivateGallaryState extends State<PrivateGallary>
     with AutomaticKeepAliveClientMixin<PrivateGallary> {
-  MainOperations privateGallaryCats = MainOperations(0, [], []);
+  late MainOperations privateGallaryCats;
+  @override
+  void initState() {
+    privateGallaryCats = MainOperations(0, [], []);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +38,7 @@ class _PrivateGallaryState extends State<PrivateGallary>
                     FloatingActionButton(
                         backgroundColor: Colors.amber,
                         elevation: 0,
-                        onPressed: () {
-                          onPressShowUnlikeds(context);
-                        },
+                        onPressed: () => onPressShowUnlikeds(context),
                         child: Stack(
                           children: [
                             Align(
@@ -56,6 +59,7 @@ class _PrivateGallaryState extends State<PrivateGallary>
                                   )),
                             ),
                             const Center(
+                              /// x represents cat symbol in [symbol] font
                               child: Text(
                                 "X",
                                 style: TextStyle(
@@ -74,9 +78,9 @@ class _PrivateGallaryState extends State<PrivateGallary>
                   child: FloatingActionButton(
                       backgroundColor: Colors.amber,
                       elevation: 0,
-                      onPressed: () {
-                        onPressClearList();
-                      },
+                      onPressed: () => onPressClearList(),
+
+                      /// > represents cat symbol in [symbol] font
                       child: const Text(
                         ">",
                         style: TextStyle(
@@ -95,6 +99,9 @@ class _PrivateGallaryState extends State<PrivateGallary>
                     width: 4, color: const Color.fromARGB(255, 0, 0, 0)),
                 borderRadius: BorderRadius.circular(25),
                 color: AppConsts.mainWhite,
+
+                /// if there is at least on uploaded image in [images] image would appear
+
                 image: () {
                   if (privateGallaryCats.images.isNotEmpty) {
                     return privateGallaryCats.images.isNotEmpty
@@ -145,18 +152,15 @@ class _PrivateGallaryState extends State<PrivateGallary>
                         IconButton(
                             icon: const Icon(Icons.arrow_back_ios,
                                 color: AppConsts.mainWhite),
-                            onPressed: () {
-                              isPreviusIndexnotCuteEnoughd(
-                                  privateGallaryCats.index);
-                              // }
-                            }),
+                            onPressed: () => isPreviusIndexnotCuteEnoughd(
+                                privateGallaryCats.index)
+                            // }
+                            ),
                         IconButton(
                             icon: const Icon(Icons.arrow_forward_ios,
                                 color: AppConsts.mainWhite),
-                            onPressed: () {
-                              isNextIndexnotCuteEnoughd(
-                                  privateGallaryCats.index);
-                            })
+                            onPressed: () => isNextIndexnotCuteEnoughd(
+                                privateGallaryCats.index))
                       ]),
                 ),
               ],
@@ -175,17 +179,13 @@ class _PrivateGallaryState extends State<PrivateGallary>
                         fontFamily: "symbol",
                         color: AppConsts.mainWhite),
                   ),
-                  onPressed: () {
-                    onPressNotcuteEnogh(context);
-                  }),
+                  onPressed: () => onPressNotcuteEnogh(context)),
               FloatingActionButton(
                   elevation: 0,
                   backgroundColor: Colors.green,
                   child: const Icon(Icons.upload_file_outlined,
                       color: AppConsts.mainWhite),
-                  onPressed: () {
-                    onPressUpload();
-                  }),
+                  onPressed: () => onPressUpload()),
             ],
           ),
         ],

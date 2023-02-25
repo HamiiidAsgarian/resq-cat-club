@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:resq_cat_club/view/const.dart';
+import 'package:resq_cat_club/core/const.dart';
 import 'package:resq_cat_club/view/widgets/private_gallary.dart';
 import '../widgets/public_gallary.dart';
 
@@ -8,7 +8,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> tabs = [const PublicGallary(), const PrivateGallary()];
+    ///There are two main [tabs] for [PublicGallary] and [PrivateGallary]
+    const List<Widget> tabs = [PublicGallary(), PrivateGallary()];
 
     return DefaultTabController(
       length: tabs.length,
@@ -76,6 +77,8 @@ class HomeScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(5),
                           color: Colors.black,
                         ),
+
+                        /// [tabs] title value which should be equal in [length] with the number of [tabs] for preventing the app from crashes
                         tabs: ["Online", "Private"]
                             .map((e) => Padding(
                                   padding: const EdgeInsets.symmetric(
@@ -95,8 +98,9 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 const Expanded(
-                    child: TabBarView(
-                        children: [PublicGallary(), PrivateGallary()]))
+
+                    /// adding the [tabls]
+                    child: TabBarView(children: tabs))
               ]),
             ],
           ),

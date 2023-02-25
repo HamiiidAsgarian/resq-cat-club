@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:resq_cat_club/view/const.dart';
+import 'package:resq_cat_club/core/const.dart';
 import 'package:resq_cat_club/view/screens/home_screen.dart';
 
 void main() {

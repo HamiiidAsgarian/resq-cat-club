@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:resq_cat_club/presenter/main_operations.dart';
-import '../const.dart';
+import '../../core/const.dart';
 import 'dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -13,7 +13,12 @@ class PublicGallary extends StatefulWidget {
 
 class _PublicGallaryState extends State<PublicGallary>
     with AutomaticKeepAliveClientMixin<PublicGallary> {
-  MainOperations publicGallaryCats = MainOperations(0, [], []);
+  late MainOperations publicGallaryCats;
+  @override
+  void initState() {
+    publicGallaryCats = MainOperations(0, [], []);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +38,7 @@ class _PublicGallaryState extends State<PublicGallary>
                     FloatingActionButton(
                         backgroundColor: Colors.amber,
                         elevation: 0,
-                        onPressed: () {
-                          onPressShowUnlikeds(context);
-                        },
+                        onPressed: () => onPressShowUnlikeds(context),
                         child: Stack(
                           children: [
                             Align(
@@ -74,9 +77,10 @@ class _PublicGallaryState extends State<PublicGallary>
                   child: FloatingActionButton(
                       backgroundColor: Colors.amber,
                       elevation: 0,
-                      onPressed: () {
-                        onPressClearList();
-                      },
+                      onPressed: () => onPressClearList(),
+
+                      /// > represents cat symbol in [symbol] font
+
                       child: const Text(
                         ">",
                         style: TextStyle(
@@ -138,18 +142,15 @@ class _PublicGallaryState extends State<PublicGallary>
                         IconButton(
                             icon: const Icon(Icons.arrow_back_ios,
                                 color: AppConsts.mainWhite),
-                            onPressed: () {
-                              isPreviusIndexnotCuteEnoughd(
-                                  publicGallaryCats.index);
-                              // }
-                            }),
+                            onPressed: () => isPreviusIndexnotCuteEnoughd(
+                                publicGallaryCats.index)
+                            // }
+                            ),
                         IconButton(
                             icon: const Icon(Icons.arrow_forward_ios,
                                 color: AppConsts.mainWhite),
-                            onPressed: () {
-                              isNextIndexnotCuteEnoughd(
-                                  publicGallaryCats.index);
-                            })
+                            onPressed: () => isNextIndexnotCuteEnoughd(
+                                publicGallaryCats.index))
                       ]),
                 ),
               ],
@@ -161,6 +162,9 @@ class _PublicGallaryState extends State<PublicGallary>
               FloatingActionButton(
                   elevation: 0,
                   backgroundColor: Colors.redAccent,
+
+                  /// x represents cat symbol in [symbol] font
+
                   child: const Text(
                     "X",
                     style: TextStyle(
@@ -168,9 +172,7 @@ class _PublicGallaryState extends State<PublicGallary>
                         fontFamily: "symbol",
                         color: AppConsts.mainWhite),
                   ),
-                  onPressed: () {
-                    onPressNotcuteEnogh(context);
-                  }),
+                  onPressed: () => onPressNotcuteEnogh(context)),
             ],
           ),
         ],

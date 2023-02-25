@@ -10,7 +10,7 @@ abstract class Operations {
   List<int> getNotCuteList();
   void addNewNotCuteEnough();
   void clearNotCutes();
-  void removeNotCuteByElement(e);
+  void removeNotCuteByElement(dynamic e);
   void showSnackbar(
       BuildContext context, String message, Function onPressRegret);
   void onPressShowUnlikeds(BuildContext context);
@@ -58,7 +58,6 @@ class MainOperations implements Operations {
   void addNewNotCuteEnough() {
     if (!_notCuteEnoughList.contains(_index)) {
       _notCuteEnoughList.add(_index);
-      // _notCuteEnoughList = _notCuteEnoughList.toSet().toList();
     }
   }
 
@@ -68,7 +67,7 @@ class MainOperations implements Operations {
   }
 
   @override
-  void removeNotCuteByElement(e) {
+  void removeNotCuteByElement(dynamic e) {
     _notCuteEnoughList.removeWhere((element) => element == e);
   }
 
@@ -83,10 +82,9 @@ class MainOperations implements Operations {
         TextButton(
             child: const Text(
               "regret",
-              style: TextStyle(color: Colors.amber),
+              style: TextStyle(color: Colors.amber, fontFamily: 'arial'),
             ),
             onPressed: () {
-              print("aaa");
               onPressRegret();
             })
       ],
@@ -101,14 +99,16 @@ class MainOperations implements Operations {
           return InfoDialouge(
               blocedItems: _notCuteEnoughList,
               onDelete: (e) {
-                // setState(() {
                 _notCuteEnoughList.removeWhere((element) => element == e);
-                // });
               });
         });
   }
 
   @override
+
+  /// a recursive function to find the immidiate available [index] inwhich is not blocked as a [notCuteEnough].
+  /// [max] is required for the [privateGallary] because it does not have  infinite positive
+  ///  index and is limited to the uploaded images length only
   isNextIndexnotCuteEnoughd(int val, int? max) {
     if (_notCuteEnoughList.contains(val + 1)) {
       isNextIndexnotCuteEnoughd(val + 1, max);
@@ -122,6 +122,10 @@ class MainOperations implements Operations {
       }
     }
   }
+
+  /// a recursive function to find the immidiate available [index] inwhich is not blocked as a [notCuteEnough].
+  /// [min] is required for the [privateGallary] because it does not have infinite negative
+  ///  index and is limited to the uploaded images length only
 
   @override
   isPreviusIndexnotCuteEnoughd(int val, int? min) {
@@ -140,6 +144,8 @@ class MainOperations implements Operations {
       }
     }
   }
+
+  /// let the user to pic an image from device gallary and adds to the [images] list.
 
   @override
   Future onPressUpload() async {
