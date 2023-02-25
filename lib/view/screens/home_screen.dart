@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:resq_cat_club/view/const.dart';
 import 'package:resq_cat_club/view/widgets/private_gallary.dart';
 import '../widgets/public_gallary.dart';
 
@@ -20,7 +21,7 @@ class HomeScreen extends StatelessWidget {
                 width: double.infinity,
                 height: 140,
                 decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 0, 190, 98),
+                    color: Theme.of(context).primaryColor,
                     border: Border.all(
                         width: 4, color: const Color.fromARGB(255, 0, 0, 0)),
                     borderRadius: const BorderRadius.only(
@@ -39,14 +40,14 @@ class HomeScreen extends StatelessWidget {
                         style: TextStyle(
                             fontFamily: "symbol",
                             fontSize: 40,
-                            color: Colors.white),
+                            color: AppConsts.mainWhite),
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 25),
                         child: Text(
                           "ResQ Cat Club",
                           style: TextStyle(
-                            color: Colors.white,
+                            color: AppConsts.mainWhite,
                             fontSize: 40,
                             fontFamily: "pawn",
                           ),
@@ -57,7 +58,7 @@ class HomeScreen extends StatelessWidget {
                         style: TextStyle(
                             fontFamily: "symbol",
                             fontSize: 40,
-                            color: Colors.white),
+                            color: AppConsts.mainWhite),
                       ),
                     ],
                   ),
@@ -83,8 +84,7 @@ class HomeScreen extends StatelessWidget {
                                     child: Text(
                                       e,
                                       style: const TextStyle(
-                                        color:
-                                            Color.fromARGB(255, 255, 255, 255),
+                                        color: AppConsts.mainWhite,
                                         fontSize: 20,
                                         fontFamily: "text",
                                       ),

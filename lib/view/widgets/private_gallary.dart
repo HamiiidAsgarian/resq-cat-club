@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:resq_cat_club/presenter/main_operations.dart';
 
+import '../const.dart';
 import 'dialog.dart';
 
 class PrivateGallary extends StatefulWidget {
@@ -43,7 +44,7 @@ class _PrivateGallaryState extends State<PrivateGallary>
                                   width: 20,
                                   height: 20,
                                   decoration: const BoxDecoration(
-                                      color: Colors.white,
+                                      color: AppConsts.mainWhite,
                                       shape: BoxShape.circle),
                                   child: Center(
                                     child: Text(
@@ -58,7 +59,9 @@ class _PrivateGallaryState extends State<PrivateGallary>
                               child: Text(
                                 "X",
                                 style: TextStyle(
-                                    fontSize: 30, fontFamily: "symbol"),
+                                    fontSize: 30,
+                                    fontFamily: "symbol",
+                                    color: AppConsts.mainWhite),
                               ),
                             )
                           ],
@@ -76,7 +79,10 @@ class _PrivateGallaryState extends State<PrivateGallary>
                       },
                       child: const Text(
                         ">",
-                        style: TextStyle(fontSize: 30, fontFamily: "symbol"),
+                        style: TextStyle(
+                            fontSize: 30,
+                            fontFamily: "symbol",
+                            color: AppConsts.mainWhite),
                       ))),
             ]),
           ),
@@ -88,7 +94,7 @@ class _PrivateGallaryState extends State<PrivateGallary>
                 border: Border.all(
                     width: 4, color: const Color.fromARGB(255, 0, 0, 0)),
                 borderRadius: BorderRadius.circular(25),
-                color: Colors.white,
+                color: AppConsts.mainWhite,
                 image: () {
                   if (privateGallaryCats.images.isNotEmpty) {
                     return privateGallaryCats.images.isNotEmpty
@@ -123,7 +129,7 @@ class _PrivateGallaryState extends State<PrivateGallary>
                         child: Text(
                           "Cat Number ${privateGallaryCats.index}",
                           style: const TextStyle(
-                            color: Colors.white,
+                            color: AppConsts.mainWhite,
                             fontSize: 30,
                             fontFamily: "text",
                           ),
@@ -138,7 +144,7 @@ class _PrivateGallaryState extends State<PrivateGallary>
                       children: [
                         IconButton(
                             icon: const Icon(Icons.arrow_back_ios,
-                                color: Colors.white),
+                                color: AppConsts.mainWhite),
                             onPressed: () {
                               isPreviusIndexnotCuteEnoughd(
                                   privateGallaryCats.index);
@@ -146,7 +152,7 @@ class _PrivateGallaryState extends State<PrivateGallary>
                             }),
                         IconButton(
                             icon: const Icon(Icons.arrow_forward_ios,
-                                color: Colors.white),
+                                color: AppConsts.mainWhite),
                             onPressed: () {
                               isNextIndexnotCuteEnoughd(
                                   privateGallaryCats.index);
@@ -164,7 +170,10 @@ class _PrivateGallaryState extends State<PrivateGallary>
                   backgroundColor: Colors.redAccent,
                   child: const Text(
                     "X",
-                    style: TextStyle(fontSize: 30, fontFamily: "symbol"),
+                    style: TextStyle(
+                        fontSize: 30,
+                        fontFamily: "symbol",
+                        color: AppConsts.mainWhite),
                   ),
                   onPressed: () {
                     onPressNotcuteEnogh(context);
@@ -172,7 +181,8 @@ class _PrivateGallaryState extends State<PrivateGallary>
               FloatingActionButton(
                   elevation: 0,
                   backgroundColor: Colors.green,
-                  child: const Icon(Icons.upload_file_outlined),
+                  child: const Icon(Icons.upload_file_outlined,
+                      color: AppConsts.mainWhite),
                   onPressed: () {
                     onPressUpload();
                   }),

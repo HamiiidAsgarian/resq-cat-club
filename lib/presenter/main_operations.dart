@@ -6,7 +6,20 @@ import 'package:image_picker/image_picker.dart';
 
 import '../view/widgets/dialog.dart';
 
-class MainOperations {
+abstract class Operations {
+  List<int> getNotCuteList();
+  void addNewNotCuteEnough();
+  void clearNotCutes();
+  void removeNotCuteByElement(e);
+  void showSnackbar(
+      BuildContext context, String message, Function onPressRegret);
+  void onPressShowUnlikeds(BuildContext context);
+  isNextIndexnotCuteEnoughd(int val, int? max);
+  isPreviusIndexnotCuteEnoughd(int val, int? min);
+  Future onPressUpload();
+}
+
+class MainOperations implements Operations {
   MainOperations(int index, List<int> notCuteEnoughList, List<File> images)
       : _images = images,
         _index = index,
@@ -36,10 +49,12 @@ class MainOperations {
     return _index;
   }
 
+  @override
   List<int> getNotCuteList() {
     return _notCuteEnoughList;
   }
 
+  @override
   void addNewNotCuteEnough() {
     if (!_notCuteEnoughList.contains(_index)) {
       _notCuteEnoughList.add(_index);
@@ -47,14 +62,17 @@ class MainOperations {
     }
   }
 
+  @override
   void clearNotCutes() {
     _notCuteEnoughList.clear();
   }
 
+  @override
   void removeNotCuteByElement(e) {
     _notCuteEnoughList.removeWhere((element) => element == e);
   }
 
+  @override
   void showSnackbar(
       BuildContext context, String message, Function onPressRegret) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -68,12 +86,14 @@ class MainOperations {
               style: TextStyle(color: Colors.amber),
             ),
             onPressed: () {
+              print("aaa");
               onPressRegret();
             })
       ],
     )));
   }
 
+  @override
   void onPressShowUnlikeds(BuildContext context) {
     showDialog(
         context: context,
@@ -88,6 +108,7 @@ class MainOperations {
         });
   }
 
+  @override
   isNextIndexnotCuteEnoughd(int val, int? max) {
     if (_notCuteEnoughList.contains(val + 1)) {
       isNextIndexnotCuteEnoughd(val + 1, max);
@@ -102,6 +123,7 @@ class MainOperations {
     }
   }
 
+  @override
   isPreviusIndexnotCuteEnoughd(int val, int? min) {
     if (_notCuteEnoughList.contains(val - 1)) {
       isPreviusIndexnotCuteEnoughd(
@@ -119,6 +141,7 @@ class MainOperations {
     }
   }
 
+  @override
   Future onPressUpload() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
