@@ -153,9 +153,7 @@ class _PrivateGallaryState extends State<PrivateGallary>
                             icon: const Icon(Icons.arrow_back_ios,
                                 color: AppConsts.mainWhite),
                             onPressed: () => isPreviusIndexnotCuteEnoughd(
-                                privateGallaryCats.index)
-                            // }
-                            ),
+                                privateGallaryCats.index)),
                         IconButton(
                             icon: const Icon(Icons.arrow_forward_ios,
                                 color: AppConsts.mainWhite),
@@ -227,20 +225,20 @@ class _PrivateGallaryState extends State<PrivateGallary>
         });
   }
 
-  isNextIndexnotCuteEnoughd(int val) {
+  void isNextIndexnotCuteEnoughd(int val) {
     setState(() {
       privateGallaryCats.isNextIndexnotCuteEnoughd(
           val, privateGallaryCats.imagesLength);
     });
   }
 
-  isPreviusIndexnotCuteEnoughd(int val) {
+  void isPreviusIndexnotCuteEnoughd(int val) {
     setState(() {
       privateGallaryCats.isPreviusIndexnotCuteEnoughd(val, 0);
     });
   }
 
-  onPressUpload() async {
+  Future<void> onPressUpload() async {
     await privateGallaryCats.onPressUpload();
 
     setState(() {});

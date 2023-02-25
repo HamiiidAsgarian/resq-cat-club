@@ -212,13 +212,13 @@ class _PublicGallaryState extends State<PublicGallary>
         });
   }
 
-  isNextIndexnotCuteEnoughd(int val) {
+  void isNextIndexnotCuteEnoughd(int val) {
     setState(() {
       publicGallaryCats.isNextIndexnotCuteEnoughd(val, null);
     });
   }
 
-  isPreviusIndexnotCuteEnoughd(int val) {
+  void isPreviusIndexnotCuteEnoughd(int val) {
     setState(() {
       publicGallaryCats.isPreviusIndexnotCuteEnoughd(val, null);
     });

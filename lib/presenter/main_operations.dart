@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:resq_cat_club/core/const.dart';
 
 import '../view/widgets/dialog.dart';
 
@@ -14,9 +15,9 @@ abstract class Operations {
   void showSnackbar(
       BuildContext context, String message, Function onPressRegret);
   void onPressShowUnlikeds(BuildContext context);
-  isNextIndexnotCuteEnoughd(int val, int? max);
-  isPreviusIndexnotCuteEnoughd(int val, int? min);
-  Future onPressUpload();
+  void isNextIndexnotCuteEnoughd(int val, int? max);
+  void isPreviusIndexnotCuteEnoughd(int val, int? min);
+  Future<void> onPressUpload();
 }
 
 class MainOperations implements Operations {
@@ -79,14 +80,23 @@ class MainOperations implements Operations {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(message),
-        TextButton(
-            child: const Text(
-              "regret",
-              style: TextStyle(color: Colors.amber, fontFamily: 'arial'),
-            ),
-            onPressed: () {
-              onPressRegret();
-            })
+        Row(
+          children: [
+            TextButton(
+                child: const Text(
+                  "regret",
+                  style: TextStyle(color: Colors.amber, fontFamily: 'arial'),
+                ),
+                onPressed: () {
+                  onPressRegret();
+                }),
+            IconButton(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                },
+                icon: const Icon(Icons.close, color: AppConsts.mainWhite))
+          ],
+        )
       ],
     )));
   }
@@ -109,7 +119,7 @@ class MainOperations implements Operations {
   /// a recursive function to find the immidiate available [index] inwhich is not blocked as a [notCuteEnough].
   /// [max] is required for the [privateGallary] because it does not have  infinite positive
   ///  index and is limited to the uploaded images length only
-  isNextIndexnotCuteEnoughd(int val, int? max) {
+  void isNextIndexnotCuteEnoughd(int val, int? max) {
     if (_notCuteEnoughList.contains(val + 1)) {
       isNextIndexnotCuteEnoughd(val + 1, max);
     } else {
@@ -128,7 +138,7 @@ class MainOperations implements Operations {
   ///  index and is limited to the uploaded images length only
 
   @override
-  isPreviusIndexnotCuteEnoughd(int val, int? min) {
+  void isPreviusIndexnotCuteEnoughd(int val, int? min) {
     if (_notCuteEnoughList.contains(val - 1)) {
       isPreviusIndexnotCuteEnoughd(
         val - 1,
@@ -148,7 +158,7 @@ class MainOperations implements Operations {
   /// let the user to pic an image from device gallary and adds to the [images] list.
 
   @override
-  Future onPressUpload() async {
+  Future<void> onPressUpload() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) return;
