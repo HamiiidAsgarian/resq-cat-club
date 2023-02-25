@@ -48,25 +48,23 @@ class _PrivateGallaryState extends State<PrivateGallary>
                                   child: Center(
                                     child: Text(
                                       "${privateGallaryCats.notCuteEnoughLength}",
-                                      style:
-                                          const TextStyle(color: Colors.black),
+                                      style: const TextStyle(
+                                          color: Colors.black,
+                                          fontFamily: "text"),
                                     ),
                                   )),
                             ),
                             const Center(
-                              child: Icon(
-                                Icons.heart_broken_outlined,
-                                color: Colors.white,
+                              child: Text(
+                                "X",
+                                style: TextStyle(
+                                    fontSize: 30, fontFamily: "symbol"),
                               ),
                             )
                           ],
                         )),
                   ]),
                 ),
-              ),
-              Align(
-                alignment: Alignment.center,
-                child: Text("Cat Number ${privateGallaryCats.index}"),
               ),
               Align(
                   alignment: Alignment.centerRight,
@@ -76,7 +74,10 @@ class _PrivateGallaryState extends State<PrivateGallary>
                       onPressed: () {
                         onPressClearList();
                       },
-                      child: const Icon(Icons.handshake_outlined)))
+                      child: const Text(
+                        ">",
+                        style: TextStyle(fontSize: 30, fontFamily: "symbol"),
+                      ))),
             ]),
           ),
           Center(
@@ -98,30 +99,61 @@ class _PrivateGallaryState extends State<PrivateGallary>
                         : null;
                   }
                 }()),
-            child: Center(
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                        icon: const Icon(Icons.arrow_back_ios,
-                            color: Colors.white),
-                        onPressed: () {
-                          if (privateGallaryCats.index > 0) {
-                            isPreviusIndexnotCuteEnoughd(
-                                privateGallaryCats.index);
-                          }
-                          // }
-                        }),
-                    IconButton(
-                        icon: const Icon(Icons.arrow_forward_ios,
-                            color: Colors.white),
-                        onPressed: () {
-                          if (privateGallaryCats.index <
-                              privateGallaryCats.imagesLength - 1) {
-                            isNextIndexnotCuteEnoughd(privateGallaryCats.index);
-                          }
-                        })
-                  ]),
+            child: Stack(
+              children: [
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      clipBehavior: Clip.none,
+                      width: double.infinity,
+                      height: 75,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                              colors: [
+                            Colors.black,
+                            Color.fromARGB(0, 255, 255, 255)
+                          ])),
+                      child: Center(
+                        child: Text(
+                          "Cat Number ${privateGallaryCats.index}",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 30,
+                            fontFamily: "text",
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Center(
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                            icon: const Icon(Icons.arrow_back_ios,
+                                color: Colors.white),
+                            onPressed: () {
+                              isPreviusIndexnotCuteEnoughd(
+                                  privateGallaryCats.index);
+                              // }
+                            }),
+                        IconButton(
+                            icon: const Icon(Icons.arrow_forward_ios,
+                                color: Colors.white),
+                            onPressed: () {
+                              isNextIndexnotCuteEnoughd(
+                                  privateGallaryCats.index);
+                            })
+                      ]),
+                ),
+              ],
             ),
           )),
           Row(
@@ -129,8 +161,11 @@ class _PrivateGallaryState extends State<PrivateGallary>
             children: [
               FloatingActionButton(
                   elevation: 0,
-                  backgroundColor: Colors.blueAccent,
-                  child: const Icon(Icons.heart_broken_rounded),
+                  backgroundColor: Colors.redAccent,
+                  child: const Text(
+                    "X",
+                    style: TextStyle(fontSize: 30, fontFamily: "symbol"),
+                  ),
                   onPressed: () {
                     onPressNotcuteEnogh(context);
                   }),
