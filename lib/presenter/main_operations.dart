@@ -60,6 +60,7 @@ class MainOperations implements Operations {
     if (!_notCuteEnoughList.contains(_index)) {
       _notCuteEnoughList.add(_index);
     }
+    print("a $_notCuteEnoughList");
   }
 
   @override
@@ -69,7 +70,12 @@ class MainOperations implements Operations {
 
   @override
   void removeNotCuteByElement(dynamic e) {
-    _notCuteEnoughList.removeWhere((element) => element == e);
+    print("r $_notCuteEnoughList");
+
+    print(e);
+    _notCuteEnoughList
+        .removeWhere((element) => e.toString() == element.toString());
+    print("r $_notCuteEnoughList");
   }
 
   @override

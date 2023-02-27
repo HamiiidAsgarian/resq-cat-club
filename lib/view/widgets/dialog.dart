@@ -52,10 +52,9 @@ class _InfoDialougeState extends State<InfoDialouge> {
                         IconButton(
                             onPressed: () {
                               setState(() {
-                                blocedItemsLocal.removeWhere((element) =>
-                                    element == blocedItemsLocal[index]);
+                                widget.onDelete(
+                                    blocedItemsLocal[index].toString());
                               });
-                              widget.onDelete(index);
                             },
                             icon: const Icon(Icons.delete))
                       ])),
