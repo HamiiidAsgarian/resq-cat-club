@@ -115,7 +115,7 @@ class _PrivateGallaryState extends State<PrivateGallary>
             child: Stack(
               children: [
                 Align(
-                  alignment: Alignment.bottomCenter,
+                  alignment: const Alignment(0, 1.01),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Container(
@@ -177,7 +177,8 @@ class _PrivateGallaryState extends State<PrivateGallary>
                         fontFamily: "symbol",
                         color: AppConsts.mainWhite),
                   ),
-                  onPressed: () => onPressNotcuteEnogh(context)),
+                  onPressed: () =>
+                      onPressNotcuteEnogh(context, privateGallaryCats.index)),
               FloatingActionButton(
                   elevation: 0,
                   backgroundColor: Colors.green,
@@ -191,24 +192,28 @@ class _PrivateGallaryState extends State<PrivateGallary>
     );
   }
 
+  void onPressNotcuteEnogh(BuildContext context, int index) {
+    if (privateGallaryCats.images.isNotEmpty) {
+      if (!privateGallaryCats.notCuteEnoughList.contains(index)) {
+        privateGallaryCats.showSnackbar(context,
+            "${privateGallaryCats.index} is added to the notCuteEnough list",
+            () {
+          setState(() {
+            privateGallaryCats.removeNotCuteByElement(index);
+          });
+        });
+      }
+
+      privateGallaryCats.addNewNotCuteEnough();
+    }
+
+    setState(() {});
+  }
+
   void onPressClearList() {
     setState(() {
       privateGallaryCats.clearNotCutes();
     });
-  }
-
-  void onPressNotcuteEnogh(BuildContext context) {
-    if (privateGallaryCats.images.isNotEmpty) {
-      privateGallaryCats.addNewNotCuteEnough();
-      privateGallaryCats.showSnackbar(context,
-          "${privateGallaryCats.index} is added to the notCuteEnough list", () {
-        setState(() {
-          privateGallaryCats.removeNotCuteByElement(privateGallaryCats.index);
-        });
-      });
-    }
-
-    setState(() {});
   }
 
   void onPressShowUnlikeds(BuildContext context) {

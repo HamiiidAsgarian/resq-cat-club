@@ -105,7 +105,7 @@ class _PublicGallaryState extends State<PublicGallary>
             child: Stack(
               children: [
                 Align(
-                  alignment: Alignment.bottomCenter,
+                  alignment: const Alignment(0, 1.01),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Container(
@@ -172,7 +172,8 @@ class _PublicGallaryState extends State<PublicGallary>
                         fontFamily: "symbol",
                         color: AppConsts.mainWhite),
                   ),
-                  onPressed: () => onPressNotcuteEnogh(context)),
+                  onPressed: () =>
+                      onPressNotcuteEnogh(context, publicGallaryCats.index)),
             ],
           ),
         ],
@@ -180,21 +181,24 @@ class _PublicGallaryState extends State<PublicGallary>
     );
   }
 
-  void onPressClearList() {
+  void onPressNotcuteEnogh(BuildContext context, int index) {
     setState(() {
-      publicGallaryCats.clearNotCutes();
+      if (!publicGallaryCats.notCuteEnoughList.contains(index)) {
+        publicGallaryCats.showSnackbar(context,
+            "${publicGallaryCats.index} is added to the notCuteEnough list",
+            () {
+          setState(() {
+            publicGallaryCats.removeNotCuteByElement(index);
+          });
+        });
+      }
+      publicGallaryCats.addNewNotCuteEnough();
     });
   }
 
-  void onPressNotcuteEnogh(BuildContext context) {
+  void onPressClearList() {
     setState(() {
-      publicGallaryCats.addNewNotCuteEnough();
-      publicGallaryCats.showSnackbar(context,
-          "${publicGallaryCats.index} is added to the notCuteEnough list", () {
-        setState(() {
-          publicGallaryCats.removeNotCuteByElement(publicGallaryCats.index);
-        });
-      });
+      publicGallaryCats.clearNotCutes();
     });
   }
 

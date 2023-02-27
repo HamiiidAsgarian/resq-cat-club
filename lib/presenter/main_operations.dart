@@ -42,7 +42,7 @@ class MainOperations implements Operations {
     return _notCuteEnoughList.length;
   }
 
-  get notCuteEnoughList {
+  List<int> get notCuteEnoughList {
     return _notCuteEnoughList;
   }
 
@@ -82,29 +82,39 @@ class MainOperations implements Operations {
   void showSnackbar(
       BuildContext context, String message, Function onPressRegret) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        // width: double.infinity,
+        backgroundColor: Colors.black,
         content: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(message),
-        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            TextButton(
-                child: const Text(
-                  "regret",
-                  style: TextStyle(color: Colors.amber, fontFamily: 'arial'),
-                ),
-                onPressed: () {
-                  onPressRegret();
-                }),
-            IconButton(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                },
-                icon: const Icon(Icons.close, color: AppConsts.mainWhite))
+            Expanded(
+                child: Text(
+              message,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            )),
+            Row(
+              children: [
+                TextButton(
+                    child: const Text(
+                      "regret",
+                      style: TextStyle(
+                        color: Colors.amber,
+                        fontFamily: 'arial',
+                      ),
+                    ),
+                    onPressed: () {
+                      onPressRegret();
+                    }),
+                IconButton(
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    },
+                    icon: const Icon(Icons.close, color: AppConsts.mainWhite))
+              ],
+            )
           ],
-        )
-      ],
-    )));
+        )));
   }
 
   @override
