@@ -1,9 +1,9 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:resq_cat_club/core/const.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../view/widgets/dialog.dart';
 
@@ -28,7 +28,7 @@ class MainOperations implements Operations {
 
   int _index = 0;
   final List<int> _notCuteEnoughList;
-  final List<File> _images;
+  List<File> _images;
 
   get imagesLength {
     return _images.length;
@@ -60,7 +60,6 @@ class MainOperations implements Operations {
     if (!_notCuteEnoughList.contains(_index)) {
       _notCuteEnoughList.add(_index);
     }
-    print("a $_notCuteEnoughList");
   }
 
   @override
@@ -70,12 +69,8 @@ class MainOperations implements Operations {
 
   @override
   void removeNotCuteByElement(dynamic e) {
-    print("r $_notCuteEnoughList");
-
-    print(e);
     _notCuteEnoughList
         .removeWhere((element) => e.toString() == element.toString());
-    print("r $_notCuteEnoughList");
   }
 
   @override
@@ -180,8 +175,26 @@ class MainOperations implements Operations {
       if (image == null) return;
       final imageTempt = File(image.path);
       _images.add(imageTempt);
+
+      List<String> imagesPath = _images.map((e) => e.path).toList();
+      saveToLocal(imagesPath);
     } on PlatformException catch (e) {
       print(e);
     }
+  }
+
+  saveToLocal(List<String> path) async {
+    final sharedPref = await SharedPreferences.getInstance();
+    sharedPref.setStringList("image", path);
+  }
+
+  Future<List<String>?> loadFromLocal() async {
+    final sharedPref = await SharedPreferences.getInstance();
+
+    List<String> res = sharedPref.getStringList("image") ?? [];
+    List<File> filedStrings = res.map((e) => File(e)).toList();
+    _images = filedStrings;
+
+    return res;
   }
 }

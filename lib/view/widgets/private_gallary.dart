@@ -14,9 +14,11 @@ class PrivateGallary extends StatefulWidget {
 class _PrivateGallaryState extends State<PrivateGallary>
     with AutomaticKeepAliveClientMixin<PrivateGallary> {
   late MainOperations privateGallaryCats;
+  late Future<List<String>?> local;
   @override
   void initState() {
     privateGallaryCats = MainOperations(0, [], []);
+    local = privateGallaryCats.loadFromLocal();
     super.initState();
   }
 
@@ -91,77 +93,79 @@ class _PrivateGallaryState extends State<PrivateGallary>
             ]),
           ),
           Center(
-              child: Container(
-            width: 300,
-            height: 500,
-            decoration: BoxDecoration(
-                border: Border.all(
-                    width: 4, color: const Color.fromARGB(255, 0, 0, 0)),
-                borderRadius: BorderRadius.circular(25),
-                color: AppConsts.mainWhite,
+              child: FutureBuilder(
+            future: local,
+            builder: (context, snapshot) => Container(
+              width: 300,
+              height: 500,
+              decoration: BoxDecoration(
+                  border: Border.all(
+                      width: 4, color: const Color.fromARGB(255, 0, 0, 0)),
+                  borderRadius: BorderRadius.circular(25),
+                  color: AppConsts.mainWhite,
 
-                /// if there is at least on uploaded image in [images] image would appear
-
-                image: () {
-                  if (privateGallaryCats.images.isNotEmpty) {
-                    return privateGallaryCats.images.isNotEmpty
-                        ? DecorationImage(
-                            fit: BoxFit.fill,
-                            image: FileImage(privateGallaryCats
-                                .images[privateGallaryCats.index]))
-                        : null;
-                  }
-                }()),
-            child: Stack(
-              children: [
-                Align(
-                  alignment: const Alignment(0, 1.01),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Container(
-                      clipBehavior: Clip.none,
-                      width: double.infinity,
-                      height: 75,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10),
-                      decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.bottomCenter,
-                              end: Alignment.topCenter,
-                              colors: [
-                            Colors.black,
-                            Color.fromARGB(0, 255, 255, 255)
-                          ])),
-                      child: Center(
-                        child: Text(
-                          "Cat Number ${privateGallaryCats.index}",
-                          style: const TextStyle(
-                            color: AppConsts.mainWhite,
-                            fontSize: 30,
-                            fontFamily: "text",
+                  /// if there is at least on uploaded image in [images] image would appear
+                  image: () {
+                    if (privateGallaryCats.images.isNotEmpty) {
+                      return privateGallaryCats.images.isNotEmpty
+                          ? DecorationImage(
+                              fit: BoxFit.fill,
+                              image: FileImage(privateGallaryCats
+                                  .images[privateGallaryCats.index]))
+                          : null;
+                    }
+                  }()),
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: const Alignment(0, 1.01),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Container(
+                        clipBehavior: Clip.none,
+                        width: double.infinity,
+                        height: 75,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 10),
+                        decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                                begin: Alignment.bottomCenter,
+                                end: Alignment.topCenter,
+                                colors: [
+                              Colors.black,
+                              Color.fromARGB(0, 255, 255, 255)
+                            ])),
+                        child: Center(
+                          child: Text(
+                            "Cat Number ${privateGallaryCats.index}",
+                            style: const TextStyle(
+                              color: AppConsts.mainWhite,
+                              fontSize: 30,
+                              fontFamily: "text",
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                Center(
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                            icon: const Icon(Icons.arrow_back_ios,
-                                color: AppConsts.mainWhite),
-                            onPressed: () => isPreviusIndexnotCuteEnoughd(
-                                privateGallaryCats.index)),
-                        IconButton(
-                            icon: const Icon(Icons.arrow_forward_ios,
-                                color: AppConsts.mainWhite),
-                            onPressed: () => isNextIndexnotCuteEnoughd(
-                                privateGallaryCats.index))
-                      ]),
-                ),
-              ],
+                  Center(
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                              icon: const Icon(Icons.arrow_back_ios,
+                                  color: AppConsts.mainWhite),
+                              onPressed: () => isPreviusIndexnotCuteEnoughd(
+                                  privateGallaryCats.index)),
+                          IconButton(
+                              icon: const Icon(Icons.arrow_forward_ios,
+                                  color: AppConsts.mainWhite),
+                              onPressed: () => isNextIndexnotCuteEnoughd(
+                                  privateGallaryCats.index))
+                        ]),
+                  ),
+                ],
+              ),
             ),
           )),
           Row(
